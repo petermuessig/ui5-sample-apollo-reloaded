@@ -1,0 +1,11 @@
+{
+  "name": "ui5-sample-apollo-reloaded",
+  "private": true,
+  "scripts": {
+  },
+  "author": "Damian Lion Maring, Peter Muessig",
+  "license": "Apache 2.0",
+  "workspaces": [
+    "packages/*"
+  ]
+}
