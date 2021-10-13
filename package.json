@@ -2,6 +2,7 @@
   "name": "ui5-sample-apollo-reloaded",
   "private": true,
   "scripts": {
+    "start": "yarn workspace sap.ui.demo.apollo-lib bundle && yarn workspace sap.ui.demo.apollo start"
   },
   "author": "Damian Lion Maring, Peter Muessig",
   "license": "Apache 2.0",
