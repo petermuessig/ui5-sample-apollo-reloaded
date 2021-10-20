@@ -2,10 +2,15 @@
   "name": "ui5-sample-apollo-reloaded",
   "private": true,
   "scripts": {
-    "start": "yarn workspace sap.ui.demo.apollo start"
+    "start": "npm-run-all --parallel start:lib start:app",
+    "start:app": "yarn workspace sap.ui.demo.apollo start",
+    "start:lib": "yarn workspace sap.ui.demo.apollo-lib start"
   },
   "author": "Damian Lion Maring, Peter Muessig",
   "license": "Apache 2.0",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  },
   "workspaces": [
     "packages/*"
   ]

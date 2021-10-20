@@ -8,6 +8,8 @@
         "build": "npm-run-all build:ts build:ui5",
         "build:ts": "babel src --out-dir gen --source-maps inline --extensions \".ts,.js\" --copy-files",
         "build:ui5": "ui5 build --clean-dest",
+        "start": "npm-run-all --parallel watch:ts",
+        "watch:ts": "babel src --out-dir gen --source-maps inline --extensions \".ts,.js\" --copy-files --watch",
         "ts-typecheck": "tsc --noEmit",
         "lint": "eslint src"
     },

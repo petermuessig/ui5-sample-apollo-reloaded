@@ -11,6 +11,8 @@ module.exports = function ({
 
     const config = options.configuration || {}
 
+    const bundleCache = {};
+
     return async (req, res, next) => {
 
         const time = Date.now();
@@ -22,37 +24,44 @@ module.exports = function ({
             
             try {
 
-                const modulePath = require.resolve(match[1]);
+                let cachedBundle = bundleCache[match[1]];
+                if (!cachedBundle) {
 
-                bundling = true;
+                    const modulePath = require.resolve(match[1]);
 
-                // create a bundle (maybe in future we should again load the )
-                const bundle = await rollup.rollup({
-                    input: modulePath,
-                    plugins: [
-                      //typescript(),
-                      nodeResolve({
-                          browser: true,
-                          mainFields: ["module", "main"]
-                      }),
-                      commonjs(),
-                      visualizer()
-                    ]
-                });
+                    bundling = true;
+    
+                    // create a bundle (maybe in future we should again load the )
+                    const bundle = await rollup.rollup({
+                        input: modulePath,
+                        plugins: [
+                          //typescript(),
+                          nodeResolve({
+                              browser: true,
+                              mainFields: ["module", "main"]
+                          }),
+                          commonjs(),
+                          visualizer()
+                        ]
+                    });
+    
+                    // generate output specific code in-memory
+                    // you can call this function multiple times on the same bundle object
+                    const { output } = await bundle.generate({
+                        output: {
+                            format: 'amd',
+                            amd: {
+                                define: "sap.ui.define"
+                            }
+                          }
+                      });
+    
+                      cachedBundle = bundleCache[match[1]] = output;
 
-                // generate output specific code in-memory
-                // you can call this function multiple times on the same bundle object
-                const { output } = await bundle.generate({
-                    output: {
-                        format: 'amd',
-                        amd: {
-                            define: "sap.ui.define"
-                        }
-                      }
-                  });
+                }
 
                 // Right now we only support one chunk as build result
-                if (output.length === 1 && output[0].type === "chunk") {
+                if (cachedBundle.length === 1 && cachedBundle[0].type === "chunk") {
                     try {
 
                         // determine charset and content-type
@@ -63,7 +72,7 @@ module.exports = function ({
                         } = middlewareUtil.getMimeInfo(pathname);
                         res.setHeader("Content-Type", contentType);
 
-                        res.send(output[0].code);
+                        res.send(cachedBundle[0].code);
 
                         res.end();
 

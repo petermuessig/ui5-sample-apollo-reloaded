@@ -24,7 +24,9 @@ export default class BaseController extends Controller {
 			uri: 'https://48p1r2roz4.sse.codesandbox.io',
 			cache: new InMemoryCache()
 		});
-		
+
+		alert("Hello World");
+
 	}
 
 }
