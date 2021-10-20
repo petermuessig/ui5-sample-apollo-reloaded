@@ -6,8 +6,9 @@ import Controller from "sap/ui/core/mvc/Controller";
 import {
 	ApolloClient,
 	InMemoryCache,
-	ApolloProvider,
-	useQuery,
+	OperationVariables,
+	QueryOptions,
+	ApolloQueryResult,
 	gql
 } from "@apollo/client/core";
 
@@ -20,12 +21,18 @@ export default class BaseController extends Controller {
 
 	public onInit() : void {
 
+		const datasources = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources");
+		const gqlsvcs = Object.keys(datasources).filter(ds => {
+			return datasources[ds].type == "GraphQL";
+		});
+		const gqlsvc = datasources[gqlsvcs.shift()];
+
 		this.client = new ApolloClient<InMemoryCache>({
-			uri: 'https://48p1r2roz4.sse.codesandbox.io',
+			uri: gqlsvc.uri,
 			cache: new InMemoryCache()
 		});
 
-		alert("Hello World");
+		this.$query = this.client.query
 
 	}
 
