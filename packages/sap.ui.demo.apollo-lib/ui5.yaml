@@ -5,4 +5,4 @@ metadata:
 resources:
   configuration:
     paths:
-      "/resources/sap/ui/demo/apollo-lib/": "./dist/"
+      "/resources/sap/ui/demo/apollo-lib/": "./gen/sap/ui/demo/apollo-lib/"

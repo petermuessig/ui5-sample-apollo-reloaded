@@ -1,0 +1,33 @@
+/*!
+ * ${copyright}
+ */
+
+/**
+ * Initialization Code and shared classes of library apollo.client.
+ */
+sap.ui.define(['sap/ui/core/library' // library dependency
+], function () {
+  "use strict";
+  /**
+   * UI5 Apollo Client Wrapper Library
+   *
+   * @namespace
+   * @name sap.ui.demo.apollo-lib
+   * @version ${version}
+   * @public
+   */
+  // delegate further initialization of this library to the Core
+
+  sap.ui.getCore().initLibrary({
+    name: "sap.ui.demo.apollo-lib",
+    version: "${version}",
+    dependencies: ["sap.ui.core"],
+    types: [],
+    interfaces: [],
+    controls: [],
+    elements: [],
+    noLibraryCSS: true
+  });
+  return sap.ui.demo["apollo-lib"];
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uL3NyYy9zYXAvdWkvZGVtby9hcG9sbG8tbGliL2xpYnJhcnkuanMiXSwibmFtZXMiOlsic2FwIiwidWkiLCJkZWZpbmUiLCJnZXRDb3JlIiwiaW5pdExpYnJhcnkiLCJuYW1lIiwidmVyc2lvbiIsImRlcGVuZGVuY2llcyIsInR5cGVzIiwiaW50ZXJmYWNlcyIsImNvbnRyb2xzIiwiZWxlbWVudHMiLCJub0xpYnJhcnlDU1MiLCJkZW1vIl0sIm1hcHBpbmdzIjoiQUFBQTtBQUNBO0FBQ0E7O0FBRUE7QUFDQTtBQUNBO0FBQ0NBLEdBQUcsQ0FBQ0MsRUFBSixDQUFPQyxNQUFQLENBQWMsQ0FDZCxxQkFEYyxDQUNTO0FBRFQsQ0FBZCxFQUdBLFlBQVc7QUFFWDtBQUVBO0FBQ0Q7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFFQzs7QUFDQUYsRUFBQUEsR0FBRyxDQUFDQyxFQUFKLENBQU9FLE9BQVAsR0FBaUJDLFdBQWpCLENBQTZCO0FBQzVCQyxJQUFBQSxJQUFJLEVBQUcsd0JBRHFCO0FBRTVCQyxJQUFBQSxPQUFPLEVBQUUsWUFGbUI7QUFHNUJDLElBQUFBLFlBQVksRUFBRyxDQUFDLGFBQUQsQ0FIYTtBQUk1QkMsSUFBQUEsS0FBSyxFQUFFLEVBSnFCO0FBTTVCQyxJQUFBQSxVQUFVLEVBQUUsRUFOZ0I7QUFRNUJDLElBQUFBLFFBQVEsRUFBRSxFQVJrQjtBQVU1QkMsSUFBQUEsUUFBUSxFQUFFLEVBVmtCO0FBWTVCQyxJQUFBQSxZQUFZLEVBQUU7QUFaYyxHQUE3QjtBQWVBLFNBQU9aLEdBQUcsQ0FBQ0MsRUFBSixDQUFPWSxJQUFQLENBQVksWUFBWixDQUFQO0FBRUEsQ0FsQ0EiLCJzb3VyY2VzQ29udGVudCI6WyIvKiFcbiAqICR7Y29weXJpZ2h0fVxuICovXG5cbi8qKlxuICogSW5pdGlhbGl6YXRpb24gQ29kZSBhbmQgc2hhcmVkIGNsYXNzZXMgb2YgbGlicmFyeSBhcG9sbG8uY2xpZW50LlxuICovXG4gc2FwLnVpLmRlZmluZShbXG5cdCdzYXAvdWkvY29yZS9saWJyYXJ5JywgLy8gbGlicmFyeSBkZXBlbmRlbmN5XG5dLFxuXHRmdW5jdGlvbigpIHtcblxuXHRcInVzZSBzdHJpY3RcIjtcblxuXHQvKipcblx0ICogVUk1IEFwb2xsbyBDbGllbnQgV3JhcHBlciBMaWJyYXJ5XG5cdCAqXG5cdCAqIEBuYW1lc3BhY2Vcblx0ICogQG5hbWUgc2FwLnVpLmRlbW8uYXBvbGxvLWxpYlxuXHQgKiBAdmVyc2lvbiAke3ZlcnNpb259XG5cdCAqIEBwdWJsaWNcblx0ICovXG5cblx0Ly8gZGVsZWdhdGUgZnVydGhlciBpbml0aWFsaXphdGlvbiBvZiB0aGlzIGxpYnJhcnkgdG8gdGhlIENvcmVcblx0c2FwLnVpLmdldENvcmUoKS5pbml0TGlicmFyeSh7XG5cdFx0bmFtZSA6IFwic2FwLnVpLmRlbW8uYXBvbGxvLWxpYlwiLFxuXHRcdHZlcnNpb246IFwiJHt2ZXJzaW9ufVwiLFxuXHRcdGRlcGVuZGVuY2llcyA6IFtcInNhcC51aS5jb3JlXCJdLFxuXHRcdHR5cGVzOiBbXG5cdFx0XSxcblx0XHRpbnRlcmZhY2VzOiBbXG5cdFx0XSxcblx0XHRjb250cm9sczogW1xuXHRcdF0sXG5cdFx0ZWxlbWVudHM6IFtcblx0XHRdLFxuXHRcdG5vTGlicmFyeUNTUzogdHJ1ZVxuXHR9KTtcblxuXHRyZXR1cm4gc2FwLnVpLmRlbW9bXCJhcG9sbG8tbGliXCJdO1xuXG59KTsiXX0=
