@@ -1,96 +1,101 @@
-const log = require("@ui5/logger").getLogger("server:custommiddleware:modules");
-const fs = require('fs');
-const rollup = require("rollup");
-const typescript = require('@rollup/plugin-typescript');
-const { nodeResolve } = require("@rollup/plugin-node-resolve");
-const commonjs = require('@rollup/plugin-commonjs');
-const { visualizer } = require('rollup-plugin-visualizer');
+"use strict";
 
-module.exports = function ({
-    resources, options, middlewareUtil
+const log = require("@ui5/logger").getLogger("builder:customtask:ui5-tooling-modules");
+const resourceFactory = require("@ui5/fs").resourceFactory;
+
+const { generateBundle } = require("./util");
+
+const esprima = require('esprima');
+const estraverse = require('estraverse');
+
+
+/**
+ * Custom task to create the UI5 AMD-like bundles for used ES imports from node_modules.
+ *
+ * @param {object} parameters Parameters
+ * @param {module:@ui5/fs.DuplexCollection} parameters.workspace DuplexCollection to read and write files
+ * @param {module:@ui5/fs.AbstractReader} parameters.dependencies Reader or Collection to read dependency files
+ * @param {object} parameters.taskUtil Specification Version dependent interface to a
+ *                [TaskUtil]{@link module:@ui5/builder.tasks.TaskUtil} instance
+ * @param {object} parameters.options Options
+ * @param {string} parameters.options.projectName Project name
+ * @param {string} [parameters.options.projectNamespace] Project namespace if available
+ * @param {string} [parameters.options.configuration] Task configuration if given in ui5.yaml
+ * @returns {Promise<undefined>} Promise resolving with <code>undefined</code> once data has been written
+ */
+module.exports = async function ({
+    workspace,
+    dependencies,
+    taskUtil,
+    options
 }) {
 
-    const config = options.configuration || {}
-
-    return async (req, res, next) => {
-
-        const time = Date.now();
-
-        const match = /^\/resources\/(.*)\.js$/.exec(req.path);
-        if (match) {
-
-            let bundling = false;
-            
-            try {
-
-                const modulePath = require.resolve(match[1]);
-
-                bundling = true;
-
-                // create a bundle (maybe in future we should again load the )
-                const bundle = await rollup.rollup({
-                    input: modulePath,
-                    plugins: [
-                      //typescript(),
-                      nodeResolve({
-                          browser: true,
-                          mainFields: ["module", "main"]
-                      }),
-                      commonjs(),
-                      visualizer()
-                    ]
-                });
-
-                // generate output specific code in-memory
-                // you can call this function multiple times on the same bundle object
-                const { output } = await bundle.generate({
-                    output: {
-                        format: 'amd',
-                        amd: {
-                            define: "sap.ui.define"
-                        }
-                      }
-                  });
-
-                // Right now we only support one chunk as build result
-                if (output.length === 1 && output[0].type === "chunk") {
-                    try {
-
-                        // determine charset and content-type
-                        const pathname = req.path;
-                        let {
-                            contentType,
-                            charset
-                        } = middlewareUtil.getMimeInfo(pathname);
-                        res.setHeader("Content-Type", contentType);
-
-                        res.send(output[0].code);
-
-                        res.end();
-
-                        log.verbose(`Created bundle for ${req.path}`);
-
-                        log.info(`Bundling took ${(Date.now() - time)} millis`);
-
-                        return;
-
-                    } catch (err) {
-                       log.error(`Couldn't write bundle for ${rollupOptions.input}: ${err}`);
-                    }         
-                } else {
-                    log.error(`The bundle definition ${rollupOptions.input} must generate only one chunk! Skipping bundle...`);
-                }
-
-            } catch (ex) {
-                if (bundling) {
-                    console.error(ex);
-                }
-            }
-
-        }
-
-        next();
-
+    if (!taskUtil.isRootProject()) {
+        log.info(`Skipping execution. Current project '${options.projectName}' is not the root project.`);
+        return;
     }
 
-}
+    const allWorkspaceResources = await workspace.byGlob("/**/*.js");
+    const allDependenciesResources = await dependencies.byGlob("/**/*.js");
+    const allResources = [...allWorkspaceResources, ...allDependenciesResources];
+
+    const uniqueDeps = new Set();
+
+    await Promise.all(allResources.map(async (resource) => {
+
+        const content = await resource.getString();
+        const program = esprima.parse(content, { range: true, comment: true, tokens: true });
+
+        estraverse.traverse(program, {
+            enter(node, parent) {
+                if (node?.type === "CallExpression" &&
+                    /require|define/.test(node?.callee?.property?.name) &&
+                    node?.callee?.object?.property?.name == "ui" &&
+                    node?.callee?.object?.object?.name == "sap") {
+                    const depsArray = node.arguments.filter(arg => arg.type === "ArrayExpression");
+                    if (depsArray.length > 0) {
+                        const deps = depsArray[0].elements.filter(el => el.type === "Literal").map(el => el.value);
+                        deps.forEach(dep => uniqueDeps.add(dep));
+                    } 
+                }
+            }
+        });
+
+        return resource;
+
+    }));
+
+    const bundleCache = {};
+    await Promise.all(Array.from(uniqueDeps).map(async (dep) => {
+
+        let bundling = false;
+        try {
+
+            let cachedBundle = bundleCache[dep];
+            if (!cachedBundle) {
+                cachedBundle = bundleCache[dep] = await generateBundle(dep);
+            }
+    
+            // Right now we only support one chunk as build result
+            if (cachedBundle.length === 1 && cachedBundle[0].type === "chunk") {
+
+                log.info(`Bundle dependency: ${dep}`);
+                bundling = true;
+                const bundleResource = resourceFactory.createResource({
+                    path: `/resources/${dep}.js`,
+                    string: cachedBundle[0].code
+                });
+                await workspace.write(bundleResource);
+
+            }
+    
+    
+        } catch (err) {
+            if (bundling) {
+                log.error(`Couldn't bundle ${dep}: ${err}`);
+            }
+        }
+
+    }));
+
+};

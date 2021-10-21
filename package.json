@@ -2,6 +2,8 @@
   "name": "ui5-sample-apollo-reloaded",
   "private": true,
   "scripts": {
+    "build": "npm-run-all build:app",
+    "build:app": "yarn workspace sap.ui.demo.apollo build:all",
     "start": "npm-run-all --parallel start:lib start:app",
     "start:app": "yarn workspace sap.ui.demo.apollo start",
     "start:lib": "yarn workspace sap.ui.demo.apollo-lib start"

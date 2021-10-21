@@ -1,17 +1,22 @@
-const log = require("@ui5/logger").getLogger("ui5-tooling-modules");
-const fs = require('fs');
+"use strict";
 
 const rollup = require("rollup");
 const { nodeResolve } = require("@rollup/plugin-node-resolve");
 const commonjs = require('@rollup/plugin-commonjs');
 const { visualizer } = require('rollup-plugin-visualizer');
 
-module.exports = function generateBundle(moduleName) {
+module.exports = {
+
+    /**
+     * Generates a UI5 AMD-like bundle for a module out of the node_modules
+     * 
+     * @param {*} moduleName the module name
+     * @returns the content of the bundle
+     */
+    generateBundle: async function generateBundle(moduleName) {
 
         // try to resolve the module name from node modules (bare module)
         const modulePath = require.resolve(moduleName);
-
-        bundling = true;
 
         // create a bundle (maybe in future we should again load the )
         const bundle = await rollup.rollup({
@@ -35,13 +40,11 @@ module.exports = function generateBundle(moduleName) {
                 amd: {
                     define: "sap.ui.define"
                 }
-                }
-            });
+            }
+        });
 
-    } catch (ex) {
-        if (bundling) {
-            console.error(ex);
-        }
+        return output;
+
     }
 
 };

@@ -1,9 +1,6 @@
-const log = require("@ui5/logger").getLogger("server:custommiddleware:modules");
-const fs = require('fs');
-const rollup = require("rollup");
-const { nodeResolve } = require("@rollup/plugin-node-resolve");
-const commonjs = require('@rollup/plugin-commonjs');
-const { visualizer } = require('rollup-plugin-visualizer');
+const log = require("@ui5/logger").getLogger("server:custommiddleware:ui5-tooling-modules");
+
+const { generateBundle } = require("./util");
 
 module.exports = function ({
     resources, options, middlewareUtil
@@ -21,44 +18,20 @@ module.exports = function ({
         if (match) {
 
             let bundling = false;
-            
+
+            if (match[1].indexOf("@apollo") != -1) {
+                console.log(match[1]);
+                bundling = true;
+            }
+
             try {
 
                 let cachedBundle = bundleCache[match[1]];
                 if (!cachedBundle) {
-
-                    const modulePath = require.resolve(match[1]);
-
-                    bundling = true;
-    
-                    // create a bundle (maybe in future we should again load the )
-                    const bundle = await rollup.rollup({
-                        input: modulePath,
-                        plugins: [
-                          //typescript(),
-                          nodeResolve({
-                              browser: true,
-                              mainFields: ["module", "main"]
-                          }),
-                          commonjs(),
-                          visualizer()
-                        ]
-                    });
-    
-                    // generate output specific code in-memory
-                    // you can call this function multiple times on the same bundle object
-                    const { output } = await bundle.generate({
-                        output: {
-                            format: 'amd',
-                            amd: {
-                                define: "sap.ui.define"
-                            }
-                          }
-                      });
-    
-                      cachedBundle = bundleCache[match[1]] = output;
-
+                      cachedBundle = bundleCache[match[1]] = await generateBundle(match[1]);
                 }
+
+                console.log(match[1]);
 
                 // Right now we only support one chunk as build result
                 if (cachedBundle.length === 1 && cachedBundle[0].type === "chunk") {
@@ -89,9 +62,9 @@ module.exports = function ({
                     log.error(`The bundle definition ${rollupOptions.input} must generate only one chunk! Skipping bundle...`);
                 }
 
-            } catch (ex) {
+            } catch (err) {
                 if (bundling) {
-                    console.error(ex);
+                    log.error(`Couldn't bundle ${match[1]}: ${err}`);
                 }
             }
 

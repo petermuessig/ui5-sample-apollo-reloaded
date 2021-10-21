@@ -5,11 +5,7 @@ import Controller from "sap/ui/core/mvc/Controller";
 
 import {
 	ApolloClient,
-	InMemoryCache,
-	OperationVariables,
-	QueryOptions,
-	ApolloQueryResult,
-	gql
+	InMemoryCache
 } from "@apollo/client/core";
 
 /**
@@ -31,8 +27,6 @@ export default class BaseController extends Controller {
 			uri: gqlsvc.uri,
 			cache: new InMemoryCache()
 		});
-
-		this.$query = this.client.query
 
 	}
 
