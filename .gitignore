@@ -1,5 +1,6 @@
 .idea
 dist
+gen
 node_modules
 .DS_Store
 *.iml

@@ -2,13 +2,28 @@ const log = require("@ui5/logger").getLogger("server:custommiddleware:ui5-toolin
 
 const { generateBundle } = require("./util");
 
+/**
+ * Custom middleware to create the UI5 AMD-like bundles for used ES imports from node_modules.
+ *
+ * @param {object} parameters Parameters
+ * @param {object} parameters.resources Resource collections
+ * @param {module:@ui5/fs.AbstractReader} parameters.resources.all Reader or Collection to read resources of the
+ *                                        root project and its dependencies
+ * @param {module:@ui5/fs.AbstractReader} parameters.resources.rootProject Reader or Collection to read resources of
+ *                                        the project the server is started in
+ * @param {module:@ui5/fs.AbstractReader} parameters.resources.dependencies Reader or Collection to read resources of
+ *                                        the projects dependencies
+ * @param {object} parameters.middlewareUtil Specification version dependent interface to a
+ *                                        [MiddlewareUtil]{@link module:@ui5/server.middleware.MiddlewareUtil} instance
+ * @param {object} parameters.options Options
+ * @param {string} [parameters.options.configuration] Custom server middleware configuration if given in ui5.yaml
+ * @returns {function} Middleware function to use
+ */
 module.exports = function ({
     resources, options, middlewareUtil
 }) {
 
     const config = options.configuration || {}
-
-    const bundleCache = {};
 
     return async (req, res, next) => {
 
@@ -17,54 +32,30 @@ module.exports = function ({
         const match = /^\/resources\/(.*)\.js$/.exec(req.path);
         if (match) {
 
-            let bundling = false;
+            const bundle = await generateBundle(match[1]);
+            if (bundle) {
+                try {
 
-            if (match[1].indexOf("@apollo") != -1) {
-                console.log(match[1]);
-                bundling = true;
-            }
-
-            try {
-
-                let cachedBundle = bundleCache[match[1]];
-                if (!cachedBundle) {
-                      cachedBundle = bundleCache[match[1]] = await generateBundle(match[1]);
-                }
-
-                console.log(match[1]);
-
-                // Right now we only support one chunk as build result
-                if (cachedBundle.length === 1 && cachedBundle[0].type === "chunk") {
-                    try {
-
-                        // determine charset and content-type
-                        const pathname = req.path;
-                        let {
-                            contentType,
-                            charset
-                        } = middlewareUtil.getMimeInfo(pathname);
-                        res.setHeader("Content-Type", contentType);
-
-                        res.send(cachedBundle[0].code);
-
-                        res.end();
-
-                        log.verbose(`Created bundle for ${req.path}`);
-
-                        log.info(`Bundling took ${(Date.now() - time)} millis`);
-
-                        return;
-
-                    } catch (err) {
-                       log.error(`Couldn't write bundle for ${rollupOptions.input}: ${err}`);
-                    }         
-                } else {
-                    log.error(`The bundle definition ${rollupOptions.input} must generate only one chunk! Skipping bundle...`);
-                }
-
-            } catch (err) {
-                if (bundling) {
-                    log.error(`Couldn't bundle ${match[1]}: ${err}`);
+                    // determine charset and content-type
+                    const pathname = req.path;
+                    let {
+                        contentType,
+                        charset
+                    } = middlewareUtil.getMimeInfo(pathname);
+                    res.setHeader("Content-Type", contentType);
+    
+                    res.send(bundle);
+    
+                    res.end();
+    
+                    log.verbose(`Created bundle for ${req.path}`);
+    
+                    log.info(`Bundling took ${(Date.now() - time)} millis`);
+    
+                    return;
+    
+                } catch (err) {
+                    log.error(`Couldn't write bundle ${match[1]}: ${err}`);
                 }
             }
 

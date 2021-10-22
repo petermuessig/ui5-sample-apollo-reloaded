@@ -68,32 +68,14 @@ module.exports = async function ({
     const bundleCache = {};
     await Promise.all(Array.from(uniqueDeps).map(async (dep) => {
 
-        let bundling = false;
-        try {
-
-            let cachedBundle = bundleCache[dep];
-            if (!cachedBundle) {
-                cachedBundle = bundleCache[dep] = await generateBundle(dep);
-            }
-    
-            // Right now we only support one chunk as build result
-            if (cachedBundle.length === 1 && cachedBundle[0].type === "chunk") {
-
-                log.info(`Bundle dependency: ${dep}`);
-                bundling = true;
-                const bundleResource = resourceFactory.createResource({
-                    path: `/resources/${dep}.js`,
-                    string: cachedBundle[0].code
-                });
-                await workspace.write(bundleResource);
-
-            }
-    
-    
-        } catch (err) {
-            if (bundling) {
-                log.error(`Couldn't bundle ${dep}: ${err}`);
-            }
+        const bundle = await generateBundle(dep);
+        if (bundle) {
+            log.info(`Bundle dependency: ${dep}`);
+            const bundleResource = resourceFactory.createResource({
+                path: `/resources/${dep}.js`,
+                string: bundle
+            });
+            await workspace.write(bundleResource);
         }
 
     }));
