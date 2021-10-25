@@ -11,9 +11,8 @@
 	</html:div>
 
 	<html:div class="content"> 
-		<List items="{/todos}" itemClick=".listClick">
-			<CustomListItem class="todoItems">
-				<CheckBox/>
+		<List items="{/todos}" itemClick=".listClick" mode="MultiSelect">
+			<CustomListItem class="todoItems" selected="{completed}">
 				<Label text="{title}"/>
 				<Button icon="edit" click=".editTodo"/>
 				<Button icon="delete" design="Negative" click=".deleteTodo"/>

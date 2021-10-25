@@ -8,7 +8,6 @@ import {
 	InMemoryCache
 } from "@apollo/client/core";
 
-import gql from "graphql";
 
 /**
  * @namespace sap.ui.demo.apollo-lib.controller

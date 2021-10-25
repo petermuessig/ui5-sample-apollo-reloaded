@@ -21,13 +21,17 @@
     height: 2.5em;
 }
 
-.todoItems > * {
+.todoItems > :not(:first-child) {
     vertical-align: bottom;
-    margin-right: 1em;
+    margin-left: 1em;
 }
 
-.todoItems > :nth-child(2) {
+.todoItems > :nth-child(1) {
     flex-grow: 1;
+}
+
+.todoItems[selected] > ui5-label-ui5 {
+    color: lightgray;
 }
 
 .dialogTodoInput {
