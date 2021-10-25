@@ -53,10 +53,7 @@ export default class AppController extends BaseController {
 	}
 
 	public editTodo(event: Event) : void {
-		const model = (this.getView().getModel() as JSONModel);
-		const data = model.getData();
 		const context = (event.getSource() as Button).getBindingContext();
-
 		const dialog = this.byId("editTodo") as Dialog;
 		dialog.setBindingContext(context);
 		dialog.show(false);	
