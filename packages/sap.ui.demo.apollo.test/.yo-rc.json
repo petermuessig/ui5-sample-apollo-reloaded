@@ -1,0 +1,14 @@
+{
+  "generator-ui5-ts-app": {
+    "application": "apollo",
+    "namespace": "sap.ui.demo",
+    "framework": "OpenUI5",
+    "frameworkVersion": "1.94.0",
+    "author": "SAP Hackers",
+    "tstypes": "@openui5/ts-types-esm",
+    "tstypesVersion": "1.94.0",
+    "appId": "sap.ui.demo.apollo",
+    "appURI": "sap/ui/demo/apollo",
+    "setupCompleted": true
+  }
+}
