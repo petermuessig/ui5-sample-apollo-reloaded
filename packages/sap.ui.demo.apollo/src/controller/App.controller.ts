@@ -12,9 +12,6 @@ import Event from "sap/ui/base/Event";
 import Button from "sap/ui/webc/main/Button";
 import Dialog from "sap/ui/webc/main/Dialog";
 
-import {gql} from "@apollo/client/core";
-import Label from "sap/ui/webc/main/Label";
-
 
 /**
  * @namespace sap.ui.demo.apollo.controller
