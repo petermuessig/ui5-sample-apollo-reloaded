@@ -7,15 +7,10 @@ import BaseController from "sap/ui/demo/apollo-lib/controller/BaseController";
 
 import JSONModel from "sap/ui/model/json/JSONModel";
 
-import { gql } from "@apollo/client/core";
-
-// @ts-ignore: although d3 has no global export, but we need the name!
-import d3 from "d3";
 import Input from "sap/ui/webc/main/Input";
 import Event from "sap/ui/base/Event";
 import Button from "sap/ui/webc/main/Button";
 import Dialog from "sap/ui/webc/main/Dialog";
-import TextArea from "sap/ui/webc/main/TextArea";
 
 /**
  * @namespace sap.ui.demo.apollo.controller
@@ -62,9 +57,12 @@ export default class AppController extends BaseController {
 		const data = model.getData();
 		const context = (event.getSource() as Button).getBindingContext();
 
+		debugger;
+
 		const dialog = this.byId("editTodo") as Dialog;
 		dialog.setBindingContext(context);
 		dialog.show(false);	
+		event.preventDefault();
 	}
 
 	public closeEdit(event: Event) : void {
@@ -82,5 +80,8 @@ export default class AppController extends BaseController {
 		model.setData(data);
 	}
 
+	public listClick(event: Event) : void {
+		alert("listClick")
+	}
 
 }

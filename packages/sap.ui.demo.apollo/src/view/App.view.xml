@@ -11,7 +11,7 @@
 	</html:div>
 
 	<html:div class="content"> 
-		<List items="{/todos}">
+		<List items="{/todos}" itemClick=".listClick">
 			<CustomListItem class="todoItems">
 				<CheckBox/>
 				<Label text="{title}"/>
