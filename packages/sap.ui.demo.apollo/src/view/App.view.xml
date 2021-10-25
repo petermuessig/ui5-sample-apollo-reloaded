@@ -1,22 +1,33 @@
 <mvc:View
 	controllerName="sap.ui.demo.apollo.controller.App"
 	displayBlock="true"
-	xmlns="sap.m"
-	xmlns:mvc="sap.ui.core.mvc">
+	xmlns="sap.ui.webc.main"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml">
 
-	<App id="app">
-		<MessagePage
-			title="{i18n>app_title}"
-			text="{i18n>app_title}"
-			icon="sap-icon://accept"
-			id="page"
-			description="{i18n>app_description}">
-			<buttons>
-				<Button
-					text="{i18n>btn_text}"
-					press="sayHello" />
-			</buttons>
-		</MessagePage>
-	</App>
+	<html:div class="searchbar">
+		<Input id="newTodo" placeholder="My Todo..." value="{/newTodo}"/>
+		<Button text="Add Todo" design="Emphasized" click=".addTodo" icon="add"/>
+	</html:div>
+
+	<html:div class="content"> 
+		<List items="{/todos}">
+			<CustomListItem class="todoItems">
+				<CheckBox/>
+				<Label text="{title}"/>
+				<Button icon="edit" click=".editTodo"/>
+				<Button icon="delete" design="Negative" click=".deleteTodo"/>
+			</CustomListItem>
+		</List>
+	</html:div>
+
+	<Dialog id="editTodo" headerText="Edit todo item">
+		<content>
+			<Input class="dialogTodoInput" value="{title}"/>
+		</content>
+		<footer>
+			<Button class="dialogCloseButton" design="Emphasized" text="Close" click=".closeEdit"/>
+		</footer>
+	</Dialog>
 
 </mvc:View>

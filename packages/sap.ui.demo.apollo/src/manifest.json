@@ -42,13 +42,16 @@
 			"id": "app"
 		},
 
+		"resources": {
+			"css": [{"id": "customTodoCSS", "uri": "./css/style.css"}]
+		},
+
 		"dependencies": {
 			"minUI5Version": "1.94.0",
 			"libs": {
 				"sap.ui.core": {},
-				"sap.ui.layout": {},
-				"sap.ui.unified": {},
-				"sap.m": {}
+				"sap.ui.webc.common": {},
+				"sap.ui.webc.main": {}
 			}
 		},
 
