@@ -146,7 +146,6 @@ export default class AppController extends BaseController {
 		const dialog = this.byId("editTodo") as Dialog;
 		dialog.setBindingContext(context);
 		dialog.show(false);
-		event.preventDefault();
 	}
 
 	public closeEdit(event: Event) : void {

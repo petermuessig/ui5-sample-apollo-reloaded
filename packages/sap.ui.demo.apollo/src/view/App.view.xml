@@ -5,6 +5,8 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:html="http://www.w3.org/1999/xhtml">
 
+	<Title class="title" text="Todo Application"/>
+
 	<html:div class="searchbar">
 		<Input id="newTodo" placeholder="My Todo..." value="{todos>/newTodo}"/>
 		<Button text="Add Todo" design="Emphasized" click=".addTodo" icon="add"/>
