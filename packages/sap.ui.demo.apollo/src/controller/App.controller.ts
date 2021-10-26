@@ -77,13 +77,11 @@ export default class AppController extends BaseController {
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		const that = this;
 
-		// Todo figure out whats broken
 		const updateOnEvent = {
 			next: function (data: any) {
 				console.log(data)
+				//TODO why is this called on init but not anymore after an actual event???
 				that.apollo.todos.invoke();
-				// ... call updateQuery to integrate the new comment
-				// into the existing list of comments
 			},
 			error: function (err: any) {
 				console.error("err", err);
@@ -105,14 +103,6 @@ export default class AppController extends BaseController {
 		this.client.subscribe({
 			query: TODO_UPDATED_SUBSCRIPTION,
 		}).subscribe(updateOnEvent);
-
-		/*this.$subscribe({
-			query: TODO_COMPLETED_SUBSCRIPTION
-		}).subscribe(updateOnEvent);*/
-
-		/*this.$subscribe({
-			query: TODO_DELETED_SUBSCRIPTION
-		}).subscribe(updateOnEvent);*/
 
 		// apply content density mode to root view
 		this.getView().addStyleClass((this.getOwnerComponent() as AppComponent).getContentDensityClass());
