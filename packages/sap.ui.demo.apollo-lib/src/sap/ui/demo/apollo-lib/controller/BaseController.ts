@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+
 import Controller from "sap/ui/core/mvc/Controller";
+import JSONModel from "sap/ui/model/json/JSONModel";
+// @ts-ignore
+import BindingParser from "sap/ui/base/BindingParser";
 
 import {
 	ApolloCache,
@@ -20,9 +24,6 @@ import {
 } from "@apollo/client/core";
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import JSONModel from "sap/ui/model/json/JSONModel";
-// @ts-ignore
-import BindingParser from "sap/ui/base/BindingParser";
 
 
 /**
@@ -78,6 +79,8 @@ export default class BaseController extends Controller {
 			link: splitLink,
 			cache: new InMemoryCache(),
 			connectToDevTools: true,
+			name: 'ui5-client',
+			version: '1.0',
 			defaultOptions: {
 				watchQuery: { fetchPolicy: 'no-cache' },
 				query: { fetchPolicy: 'no-cache' },
@@ -86,9 +89,9 @@ export default class BaseController extends Controller {
 		});
 
 		// some syntactic sugar for the consumers
-		this.$query = this.client.query;
-		this.$mutate = this.client.mutate;
-		this.$subscribe = this.client.subscribe;
+		this.$query = this.client.query.bind(this.client);
+		this.$mutate = this.client.mutate.bind(this.client);
+		this.$subscribe = this.client.subscribe.bind(this.client);
 
 		// create a JSONModel for the data
 		this.getView().setModel(new JSONModel());

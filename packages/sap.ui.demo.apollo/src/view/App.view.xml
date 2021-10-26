@@ -13,9 +13,9 @@
 	</html:div>
 
 	<html:div class="content"> 
-		<List items="{/todos}" itemClick=".listClick">
+		<List items="{/todos}">
 			<CustomListItem class="todoItems">
-				<CheckBox checked="{selected}" change=".completeTodo"/>
+				<CheckBox checked="{completed}" change=".completeTodo"/>
 				<Label text="{title}"/>
 				<Button icon="edit" click=".editTodo"/>
 				<Button icon="delete" design="Negative" click=".deleteTodo"/>
@@ -23,9 +23,9 @@
 		</List>
 	</html:div>
 
-	<Dialog id="editTodo" headerText="Edit todo item">
+	<Dialog id="editDialog" headerText="Edit todo item">
 		<content>
-			<Input class="dialogTodoInput" value="{edit>/title}"/>
+			<Input id="editTodo" class="dialogTodoInput"/>
 		</content>
 		<footer>
 			<Button class="dialogCloseButton" design="Emphasized" text="Close" click=".closeEdit"/>

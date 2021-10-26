@@ -11,7 +11,8 @@ import Event from "sap/ui/base/Event";
 import Button from "sap/ui/webc/main/Button";
 import Dialog from "sap/ui/webc/main/Dialog";
 import { browser } from "sap/ui/Device";
-import {gql} from "@apollo/client/core";
+import { gql } from "@apollo/client/core";
+import Input from "sap/ui/webc/main/Input";
 
 const GET_TODOS = gql`
 	query GetToDos {
@@ -82,43 +83,34 @@ export default class AppController extends BaseController {
 				console.log(data)
 				that.apollo.todos.invoke();
 			},
-			error: function (err: any) {
+			error: (err: any) => {
 				console.error("err", err);
 			},
 		};
 
-		this.client.subscribe({
+		this.$subscribe({
 			query: TODO_ADDED_SUBSCRIPTION,
 		}).subscribe(updateOnEvent);
 
-		this.client.subscribe({
+		this.$subscribe({
 			query: TODO_COMPLETED_SUBSCRIPTION,
 		}).subscribe(updateOnEvent);
 
-		this.client.subscribe({
+		this.$subscribe({
 			query: TODO_DELETED_SUBSCRIPTION,
 		}).subscribe(updateOnEvent);
 
-		this.client.subscribe({
+		this.$subscribe({
 			query: TODO_UPDATED_SUBSCRIPTION,
 		}).subscribe(updateOnEvent);
 
 		// apply content density mode to root view
 		this.getView().addStyleClass((this.getOwnerComponent() as AppComponent).getContentDensityClass());
 
-		// set the model
-		this.getView().setModel(new JSONModel({
-			"newTodo": "",
-			"itemsRemovable": true
-		}), "todos");
-		this.getView().setModel(new JSONModel({
-			"isMobile": browser.mobile,
-			"filterText": undefined
-		}), "view");
 	}
 
 	public addTodo(event: Event) : void {
-		const model = (this.getView().getModel("todos") as JSONModel);
+		const newTodo = (this.byId("newTodo") as Input);
 
 		// create the new todo item via mutate call
 		void this.$mutate({
@@ -130,34 +122,28 @@ export default class AppController extends BaseController {
 				}
 			}`,
 			variables: {
-				title: model.getProperty("/newTodo")
+				title: newTodo.getValue()
 			},
 		}).then(( /* response */ ) => {
 			// clean the new todo input
-			model.setProperty("/newTodo", "");
+			newTodo.setValue("");
 		});
-	}
-
-	public markAsCompleted(event: Event) : void {
-		console.log("test")
 	}
 
 	public editTodo(event: Event) : void {
 		const context = (event.getSource() as Button).getBindingContext();
-		const dialog = this.byId("editTodo") as Dialog;
-		let editModel = dialog.getModel("edit") as JSONModel;
-		if (!editModel) {
-			editModel = new JSONModel();
-			dialog.setModel(editModel, "edit");
-		}
-		editModel.setData(JSON.parse(JSON.stringify(context.getProperty(""))));
+		const dialog = this.byId("editDialog") as Dialog;
+		dialog.setBindingContext(context);
+		const editTodo = this.byId("editTodo") as Input;
+		editTodo.setValue(context.getProperty("title"));
 		dialog.show(false);
 	}
 
 	public closeEdit(event: Event) : void {
-		const dialog = this.byId("editTodo") as Dialog;
-		const editModel = dialog.getModel("edit") as JSONModel;
-		void this.$mutate({
+		const dialog = this.byId("editDialog") as Dialog;
+		const context = dialog.getBindingContext();
+		const editTodo = this.byId("editTodo") as Input;
+		this.$mutate({
 			mutation: gql`mutation CreateTodo($id: ID, $title: String) {
 				updateTodo(todo: {id: $id title: $title }) {
 					id
@@ -166,37 +152,47 @@ export default class AppController extends BaseController {
 				}
 			}`,
 			variables: {
-				title: editModel.getProperty("/title"),
-				id: editModel.getProperty("/id")
+				title: editTodo.getValue(),
+				id: context.getProperty("id")
 			},
 		}).then(( /* response */ ) => {
-			// clean the new todo input
 			dialog.close();
 		});
 	}
 
 	public deleteTodo(event: Event) : void {
-		const pathToDelete = (event.getSource() as Button).getBindingContext().getPath();
-		const idx = pathToDelete.substr(pathToDelete.lastIndexOf("/") + 1);
+		const context = (event.getSource() as Button).getBindingContext();
 
 		void this.$mutate({
 			mutation: gql`mutation DeleteTodo($id: ID) {
 				deleteTodo(id: $id)
 			}`,
 			variables: {
-				id: idx
+				id: context.getProperty("id")
 			},
 		}).then(( /* response */ ) => {
 			/* do nothing on callback, eventing/subscriptions will be notified */
 		});
 	}
 
-	public listClick(event: Event) : void {
-		console.log(event)
-	}
-
 	public completeTodo(event: Event) : void {
-		console.log(event)
+
+		const context = (event.getSource() as Button).getBindingContext();
+
+		this.$mutate({
+			mutation: gql`mutation IdMutation($setTodoCompletionStatusId: ID!, $completed: Boolean!) {
+				setTodoCompletionStatus(id: $setTodoCompletionStatusId, completed: $completed) {
+					id
+					completed
+				}
+			}`,
+			variables: {
+				setTodoCompletionStatusId: context.getProperty("id"),
+				completed: context.getProperty("completed")
+			},
+		}).then(( /* response */ ) => {
+			/* do nothing on callback, eventing/subscriptions will be notified */
+		});
 	}
 
 }
