@@ -6,7 +6,7 @@
 	xmlns:html="http://www.w3.org/1999/xhtml">
 
 	<html:div class="searchbar">
-		<Input id="newTodo" placeholder="My Todo..." value="{/newTodo}"/>
+		<Input id="newTodo" placeholder="My Todo..." value="{todos>/newTodo}"/>
 		<Button text="Add Todo" design="Emphasized" click=".addTodo" icon="add"/>
 	</html:div>
 

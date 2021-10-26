@@ -14,10 +14,16 @@ const pubsub = new PubSub();
 const TODO_ADDED = 'TODO_ADDED';
 const TODO_COMPLETED = 'TODO_COMPLETED';
 const TODO_DELETED = 'TODO_DELETED';
+const TODO_UPDATED = 'TODO_UPDATED';
 
 const typeDefs = gql`
-  input TodoInput {
+  input TodoCreateInput {
     title: String
+  }
+
+  input TodoUpdateInput {
+    title: String
+    id: ID
   }
 
   type Todo {
@@ -31,13 +37,16 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createTodo(todo: TodoInput): Todo
+    createTodo(todo: TodoCreateInput): Todo
+    updateTodo(todo: TodoUpdateInput): Todo
+    deleteTodo(id: ID): Boolean
     deleteCompleted: Boolean
     setTodoCompletionStatus(id: ID!, completed: Boolean!): Todo
   }
 
   type Subscription {
     todoAdded: Todo
+    todoUpdated: Todo
     todoCompleted: Todo
     todoDeleted: Boolean
   }
@@ -87,6 +96,19 @@ const resolvers = {
       todos.push(newTodo)
       pubsub.publish(TODO_ADDED, { todoAdded: newTodo });
       return newTodo;
+    },
+    updateTodo: async (_, { todo }, { dataSources }) => {
+      let todoIndex = todos.findIndex(t => t.id === todo.id);
+      todos[todoIndex].title = todo.title;
+      const updatedTodo = todos[todoIndex]
+      pubsub.publish(TODO_UPDATED, { todoUpdated: updatedTodo });
+      return updatedTodo;
+    },
+    deleteTodo: async (_, { id }, { dataSources }) => {
+      let todoIndex = todos.findIndex(t => t.id === id);
+      todos.splice(todoIndex, 1);
+      pubsub.publish(TODO_DELETED, { todoDeleted: true });
+      return true
     }
   },
   Subscription: {
@@ -99,6 +121,9 @@ const resolvers = {
     },
     todoDeleted: {
       subscribe: () => pubsub.asyncIterator([TODO_DELETED]),
+    },
+    todoUpdated: {
+      subscribe: () => pubsub.asyncIterator([TODO_UPDATED]),
     }
   },
 };
@@ -130,7 +155,7 @@ async function startApolloServer(schema) {
     schema,
     // These are imported from `graphql`.
     execute,
-    subscribe,
+    subscribe
   }, {
     // This is the `httpServer` we created in a previous step.
     server: httpServer,
