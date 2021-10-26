@@ -76,11 +76,11 @@ export default class BaseController extends Controller {
 		);
 
 		this.client = new ApolloClient({
+			name: 'ui5-client',
+			version: '1.0',
 			link: splitLink,
 			cache: new InMemoryCache(),
 			connectToDevTools: true,
-			name: 'ui5-client',
-			version: '1.0',
 			defaultOptions: {
 				watchQuery: { fetchPolicy: 'no-cache' },
 				query: { fetchPolicy: 'no-cache' },
