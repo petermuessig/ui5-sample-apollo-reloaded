@@ -80,7 +80,6 @@ export default class AppController extends BaseController {
 		const updateOnEvent = {
 			next: function (data: any) {
 				console.log(data)
-				//TODO why is this called on init but not anymore after an actual event???
 				that.apollo.todos.invoke();
 			},
 			error: function (err: any) {
@@ -116,7 +115,6 @@ export default class AppController extends BaseController {
 			"isMobile": browser.mobile,
 			"filterText": undefined
 		}), "view");
-
 	}
 
 	public addTodo(event: Event) : void {

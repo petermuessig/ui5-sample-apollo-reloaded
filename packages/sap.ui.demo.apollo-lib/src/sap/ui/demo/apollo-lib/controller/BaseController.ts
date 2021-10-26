@@ -112,7 +112,6 @@ export default class BaseController extends Controller {
 			variables: this.getVariables(this.apollo[entity].variables)
 		}).then(function(result) {
 			const binding = BindingParser.complexParser(this.apollo[entity].binding);
-			console.log(result.data[this.apollo[entity].query.definitions[0].selectionSet.selections[0].name.value);
 			this.getView().getModel(binding && binding.model).setProperty(binding && binding.path || `/${entity}`, result.data[this.apollo[entity].query.definitions[0].selectionSet.selections[0].name.value])
 		}.bind(this));
 		if (typeof this.onApolloError === "function") {
