@@ -31,12 +31,12 @@
     margin-left: 1em;
 }
 
-.todoItems > :nth-child(1) {
+.todoItems > :nth-child(2) {
     flex-grow: 1;
 }
 
-.todoItems[selected] > ui5-label-ui5 {
-    color: lightgray;
+.todoItems > :last-child {
+    margin-right: 1em;
 }
 
 .dialogTodoInput {

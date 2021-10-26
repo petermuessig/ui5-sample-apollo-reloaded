@@ -69,10 +69,6 @@
 				"settings": {
 					"bundleName": "sap.ui.demo.apollo.i18n.i18n"
 				}
-			},
-			"todos": {
-				"type": "sap.ui.model.json.JSONModel",
-				"uri": "model/todoitems.json"
 			}
 		},
 

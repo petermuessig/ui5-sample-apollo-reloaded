@@ -110,6 +110,10 @@ export default class AppController extends BaseController {
 
 		// set the model
 		this.getView().setModel(new JSONModel({
+			"newTodo": "",
+			"itemsRemovable": true
+		}));
+		this.getView().setModel(new JSONModel({
 			"isMobile": browser.mobile,
 			"filterText": undefined
 		}), "view");
@@ -144,13 +148,18 @@ export default class AppController extends BaseController {
 	public editTodo(event: Event) : void {
 		const context = (event.getSource() as Button).getBindingContext();
 		const dialog = this.byId("editTodo") as Dialog;
-		dialog.setBindingContext(context);
+		let editModel = dialog.getModel("edit") as JSONModel;
+		if (!editModel) {
+			editModel = new JSONModel();
+			dialog.setModel(editModel, "edit");
+		}
+		editModel.setData(JSON.parse(JSON.stringify(context.getProperty(""))));
 		dialog.show(false);
 	}
 
 	public closeEdit(event: Event) : void {
 		const dialog = this.byId("editTodo") as Dialog;
-
+		const editModel = dialog.getModel("edit") as JSONModel;
 		this.$mutate({
 			mutation: gql`mutation CreateTodo($id: ID, $title: String) {
 				updateTodo(todo: {id: $id title: $title }) {
@@ -160,8 +169,8 @@ export default class AppController extends BaseController {
 				}
 			}`,
 			variables: {
-				title: dialog.getBindingContext().getProperty('title'),
-				id: dialog.getBindingContext().getProperty('id')
+				title: editModel.getProperty("/title"),
+				id: editModel.getProperty("/id")
 			},
 		}).then(( /* response */ ) => {
 			// clean the new todo input
@@ -183,6 +192,10 @@ export default class AppController extends BaseController {
 		}).then(( /* response */ ) => {
 			/* do nothing on callback, eventing/subscriptions will be notified */
 		});
+	}
+
+	public completeTodo(event: Event) : void {
+		
 	}
 
 }
