@@ -3,7 +3,6 @@
 const rollup = require("rollup");
 const { nodeResolve } = require("@rollup/plugin-node-resolve");
 const commonjs = require('@rollup/plugin-commonjs');
-const { visualizer } = require('rollup-plugin-visualizer');
 
 // local bundle cache
 const bundleCache = {};
@@ -39,8 +38,7 @@ module.exports = {
                             browser: true,
                             mainFields: ["module", "main"]
                         }),
-                        commonjs(),
-                        visualizer()
+                        commonjs()
                     ]
                 });
 
