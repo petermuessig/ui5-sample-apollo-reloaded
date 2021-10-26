@@ -4,9 +4,10 @@
   "scripts": {
     "build": "npm-run-all build:app",
     "build:app": "yarn workspace sap.ui.demo.apollo build:all",
-    "start": "npm-run-all --parallel start:lib start:app",
+    "start": "npm-run-all --parallel start:lib start:app start:server",
     "start:app": "yarn workspace sap.ui.demo.apollo start",
-    "start:lib": "yarn workspace sap.ui.demo.apollo-lib start"
+    "start:lib": "yarn workspace sap.ui.demo.apollo-lib start",
+    "start:server": "yarn workspace apollo-demo-todo-server start"
   },
   "author": "Damian Lion Maring, Peter Muessig",
   "license": "Apache 2.0",

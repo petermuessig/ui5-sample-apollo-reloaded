@@ -1,0 +1,21 @@
+{
+  "name": "apollo-demo-todo-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@graphql-tools/schema": "^8.3.0",
+    "apollo-server": "^3.4.0",
+    "apollo-server-core": "^3.4.0",
+    "apollo-server-express": "^3.4.0",
+    "express": "^4.17.1",
+    "graphql-subscriptions": "^1.2.1",
+    "subscriptions-transport-ws": "^0.9.19"
+  }
+}
