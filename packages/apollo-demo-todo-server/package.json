@@ -14,6 +14,7 @@
     "apollo-server": "^3.4.0",
     "apollo-server-core": "^3.4.0",
     "apollo-server-express": "^3.4.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "graphql-subscriptions": "^1.2.1",
     "subscriptions-transport-ws": "^0.9.19"

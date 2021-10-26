@@ -71,12 +71,18 @@ export default class BaseController extends Controller {
 				);
 			},
 			wsLink,
-			httpLink,
+			httpLink
 		);
 
 		this.client = new ApolloClient({
 			link: splitLink,
-			cache: new InMemoryCache()
+			cache: new InMemoryCache(),
+			connectToDevTools: true,
+			defaultOptions: {
+				watchQuery: { fetchPolicy: 'no-cache' },
+				query: { fetchPolicy: 'no-cache' },
+				mutate: { fetchPolicy: 'no-cache' }
+			}
 		});
 
 		// some syntactic sugar for the consumers
@@ -117,7 +123,7 @@ export default class BaseController extends Controller {
 	}
 
 	private getVariables(variables: any) : {} {
-		let result = {};
+		let result: any = []
 		if (variables) {
 			Object.keys(variables).forEach(function(key) {
 				const binding = BindingParser.complexParser(variables[key]);

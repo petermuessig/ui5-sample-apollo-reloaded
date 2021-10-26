@@ -11,7 +11,7 @@ import Event from "sap/ui/base/Event";
 import Button from "sap/ui/webc/main/Button";
 import Dialog from "sap/ui/webc/main/Dialog";
 import { browser } from "sap/ui/Device";
-import { gql } from "@apollo/client/core";
+import {gql} from "@apollo/client/core";
 
 const GET_TODOS = gql`
 	query GetToDos {
@@ -49,6 +49,16 @@ const TODO_DELETED_SUBSCRIPTION = gql`
 	}
 `;
 
+const TODO_UPDATED_SUBSCRIPTION = gql`
+	subscription onTodoUpdated {
+		todoUpdated {
+			id
+			title
+			completed
+		}
+	}
+`;
+
 /**
  * @namespace sap.ui.demo.apollo.controller
  */
@@ -57,7 +67,7 @@ export default class AppController extends BaseController {
 	apollo = {
 		todos: {
 			binding: "{/todos}",
-			query: GET_TODOS,
+			query: GET_TODOS
 		},
 	}
 
@@ -69,7 +79,7 @@ export default class AppController extends BaseController {
 
 		// Todo figure out whats broken
 		const updateOnEvent = {
-			next: function (data: never) {
+			next: function (data: any) {
 				console.log(data)
 				that.apollo.todos.invoke();
 				// ... call updateQuery to integrate the new comment
@@ -80,22 +90,21 @@ export default class AppController extends BaseController {
 			},
 		};
 
+		this.client.subscribe({
+			query: TODO_ADDED_SUBSCRIPTION,
+		}).subscribe(updateOnEvent);
 
-		/*this.subscriptionObserver = this.$subscribe({
-			query: TODO_ADDED_SUBSCRIPTION
-		}).subscribe({
-			next({data}) {
-				debugger
-				// ... call updateQuery to integrate the new comment
-				// into the existing list of comments
-			},
-			error(err) { console.error('err', err); },
-		});*/
+		this.client.subscribe({
+			query: TODO_COMPLETED_SUBSCRIPTION,
+		}).subscribe(updateOnEvent);
 
+		this.client.subscribe({
+			query: TODO_DELETED_SUBSCRIPTION,
+		}).subscribe(updateOnEvent);
 
-		/*this.$subscribe({
-			query: TODO_ADDED_SUBSCRIPTION
-		}).subscribe(updateOnEvent);*/
+		this.client.subscribe({
+			query: TODO_UPDATED_SUBSCRIPTION,
+		}).subscribe(updateOnEvent);
 
 		/*this.$subscribe({
 			query: TODO_COMPLETED_SUBSCRIPTION
@@ -112,7 +121,7 @@ export default class AppController extends BaseController {
 		this.getView().setModel(new JSONModel({
 			"newTodo": "",
 			"itemsRemovable": true
-		}));
+		}), "todos");
 		this.getView().setModel(new JSONModel({
 			"isMobile": browser.mobile,
 			"filterText": undefined
@@ -124,7 +133,7 @@ export default class AppController extends BaseController {
 		const model = (this.getView().getModel("todos") as JSONModel);
 
 		// create the new todo item via mutate call
-		this.$mutate({
+		void this.$mutate({
 			mutation: gql`mutation CreateTodo($title: String) {
 				createTodo(todo: { title: $title }) {
 					id
@@ -160,7 +169,7 @@ export default class AppController extends BaseController {
 	public closeEdit(event: Event) : void {
 		const dialog = this.byId("editTodo") as Dialog;
 		const editModel = dialog.getModel("edit") as JSONModel;
-		this.$mutate({
+		void this.$mutate({
 			mutation: gql`mutation CreateTodo($id: ID, $title: String) {
 				updateTodo(todo: {id: $id title: $title }) {
 					id
@@ -182,7 +191,7 @@ export default class AppController extends BaseController {
 		const pathToDelete = (event.getSource() as Button).getBindingContext().getPath();
 		const idx = pathToDelete.substr(pathToDelete.lastIndexOf("/") + 1);
 
-		this.$mutate({
+		void this.$mutate({
 			mutation: gql`mutation DeleteTodo($id: ID) {
 				deleteTodo(id: $id)
 			}`,
@@ -194,8 +203,12 @@ export default class AppController extends BaseController {
 		});
 	}
 
+	public listClick(event: Event) : void {
+		console.log(event)
+	}
+
 	public completeTodo(event: Event) : void {
-		
+		console.log(event)
 	}
 
 }

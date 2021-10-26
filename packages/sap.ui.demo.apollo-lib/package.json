@@ -14,34 +14,33 @@
         "lint": "eslint src"
     },
     "dependencies": {
-        "@apollo/client": "^3.4.12",
-        "graphql": "^15.5.3"
+
     },
     "devDependencies": {
-        "@apollo/client": "^3.4.12",
-        "@babel/cli": "^7.14.3",
-        "@babel/core": "^7.14.3",
-        "@babel/preset-env": "^7.14.2",
-        "@babel/preset-typescript": "^7.13.0",
-        "@openui5/ts-types-esm": "1.95.0",
-        "@types/jquery": "3.5.1",
-        "@typescript-eslint/eslint-plugin": "^4.25.0",
-        "@typescript-eslint/parser": "^4.25.0",
-        "@ui5/cli": "^2.10.4",
-        "babel-preset-transform-ui5": "^7.0.3",
-        "eslint": "^7.27.0",
-        "graphql": "^15.5.3",
-        "npm-run-all": "^4.1.5",
+        "@apollo/client": "3.4.16",
+        "@babel/cli": "7.15.7",
+        "@babel/core": "7.15.8",
+        "@babel/preset-env": "7.15.8",
+        "@babel/preset-typescript": "7.15.0",
+        "@openui5/ts-types-esm": "1.93.2",
+        "@types/jquery": "3.5.8",
+        "@typescript-eslint/eslint-plugin": "5.2.0",
+        "@typescript-eslint/parser": "5.2.0",
+        "@ui5/cli": "2.14.0",
+        "babel-preset-transform-ui5": "7.0.5",
+        "eslint": "8.1.0",
+        "graphql": "15.6.1",
+        "npm-run-all": "4.1.5",
         "sap.ui.demo.apollo-lib": "1.0.0",
-        "typescript": "^4.3.2",
-        "ui5-middleware-livereload": "^0.5.4",
+        "typescript": "4.4.4",
+        "ui5-middleware-livereload": "0.5.5",
         "ui5-tooling-modules": "0.1.0"
     },
     "ui5": {
-      "dependencies": [
-        "ui5-middleware-livereload",
-        "ui5-tooling-modules",
-        "sap.ui.demo.apollo-lib"
-      ]
+        "dependencies": [
+            "ui5-middleware-livereload",
+            "ui5-tooling-modules",
+            "sap.ui.demo.apollo-lib"
+        ]
     }
 }
