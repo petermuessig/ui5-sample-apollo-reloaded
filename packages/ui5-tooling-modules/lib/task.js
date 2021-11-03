@@ -5,7 +5,7 @@ const resourceFactory = require("@ui5/fs").resourceFactory;
 
 const { generateBundle } = require("./util");
 
-const esprima = require('esprima');
+const espree = require('espree');
 const estraverse = require('estraverse');
 
 
@@ -42,9 +42,10 @@ module.exports = async function ({
     const uniqueDeps = new Set();
 
     await Promise.all(allResources.map(async (resource) => {
+        log.verbose(`Processing: ${resource.getPath()}`);
 
         const content = await resource.getString();
-        const program = esprima.parse(content, { range: true, comment: true, tokens: true });
+        const program = espree.parse(content, { range: true, comment: true, tokens: true, ecmaVersion: "latest" });
 
         estraverse.traverse(program, {
             enter(node, parent) {
@@ -68,6 +69,7 @@ module.exports = async function ({
     const bundleCache = {};
     await Promise.all(Array.from(uniqueDeps).map(async (dep) => {
 
+        log.verbose(`Trying to bundle dependency: ${dep}`);
         const bundle = await generateBundle(dep);
         if (bundle) {
             log.info(`Bundle dependency: ${dep}`);

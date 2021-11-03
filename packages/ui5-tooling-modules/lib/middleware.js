@@ -37,11 +37,10 @@ module.exports = function ({
                 try {
 
                     // determine charset and content-type
-                    const pathname = req.path;
                     let {
                         contentType,
                         charset
-                    } = middlewareUtil.getMimeInfo(pathname);
+                    } = middlewareUtil.getMimeInfo(req.path);
                     res.setHeader("Content-Type", contentType);
     
                     res.send(bundle);
