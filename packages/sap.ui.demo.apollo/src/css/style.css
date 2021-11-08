@@ -1,3 +1,11 @@
+.messages {
+    display: flex;
+}
+
+.messages > * {
+    margin: 1em 1em 0 1em;
+}
+
 .title {
     margin: 1em 0 1.5em 0;
     text-align: center;

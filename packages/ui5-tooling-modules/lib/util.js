@@ -1,5 +1,3 @@
-"use strict";
-
 const rollup = require("rollup");
 const { nodeResolve } = require("@rollup/plugin-node-resolve");
 const commonjs = require('@rollup/plugin-commonjs');
@@ -12,7 +10,7 @@ module.exports = {
     /**
      * Generates a UI5 AMD-like bundle for a module out of the node_modules
      * 
-     * @param {*} moduleName the module name
+     * @param {string} moduleName the module name
      * @returns the content of the bundle or undefined
      */
     generateBundle: async function generateBundle(moduleName) {
