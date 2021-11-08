@@ -1,79 +1,80 @@
 {
-	"_version": "1.12.0",
+  "_version": "1.12.0",
 
-	"sap.app": {
-		"id": "sap.ui.demo.apollo",
-		"type": "application",
-		"i18n": "i18n/i18n.properties",
-		"title": "{{app_title}}",
-		"description": "{{app_description}}",
-		"applicationVersion": {
-			"version": "1.0.0"
-		},
-		"dataSources": {
-			"gqlsvc": {
-				"uri": "http://localhost:4000/graphql",
-				"ws": "ws://localhost:4000/graphql",
-				"customType": true,
-				"type": "GraphQL",
-				"settings": {
-					"x": "y"
-				}
-			}
-		}
-	},
+  "sap.app": {
+    "id": "sap.ui.demo.apollo",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "title": "{{app_title}}",
+    "description": "{{app_description}}",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "dataSources": {
+      "gqlsvc": {
+        "uri": "http://localhost:4000/graphql",
+        "ws": "ws://localhost:4000/graphql",
+        "customType": true,
+        "type": "GraphQL",
+        "settings": {
+          "x": "y"
+        }
+      }
+    }
+  },
 
-	"sap.ui": {
-		"technology": "UI5",
-		"icons": {
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
 
-		},
-		"deviceTypes": {
-			"desktop": true,
-			"tablet": true,
-			"phone": true
-		}
-	},
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
 
-	"sap.ui5": {
-		"rootView": {
-			"viewName": "sap.ui.demo.apollo.view.App",
-			"type": "XML",
-			"async": true,
-			"id": "app"
-		},
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "sap.ui.demo.apollo.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "app"
+    },
 
-		"resources": {
-			"css": [{"id": "customTodoCSS", "uri": "./css/style.css"}]
-		},
+    "resources": {
+      "css": [{"id": "customTodoCSS", "uri": "./css/style.css"}]
+    },
 
-		"dependencies": {
-			"minUI5Version": "1.94.0",
-			"libs": {
-				"sap.ui.core": {},
-				"sap.ui.webc.common": {},
-				"sap.ui.webc.main": {}
-			}
-		},
+    "dependencies": {
+      "minUI5Version": "1.96.0",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.ui.webc.common": {},
+        "sap.ui.webc.main": {},
+        "sap.ui.demo.apollo-lib": {}
+      }
+    },
 
-		"handleValidation": true,
+    "handleValidation": true,
 
-		"contentDensities": {
-			"compact": true,
-			"cozy": true
-		},
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
 
-		"models": {
-			"i18n": {
-				"type": "sap.ui.model.resource.ResourceModel",
-				"settings": {
-					"bundleName": "sap.ui.demo.apollo.i18n.i18n"
-				}
-			}
-		},
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "sap.ui.demo.apollo.i18n.i18n"
+        }
+      }
+    },
 
-		"routing": {
-			
-		}
-	}
+    "routing": {
+      
+    }
+  }
 }

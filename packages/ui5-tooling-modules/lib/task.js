@@ -1,5 +1,3 @@
-"use strict";
-
 const log = require("@ui5/logger").getLogger("builder:customtask:ui5-tooling-modules");
 const resourceFactory = require("@ui5/fs").resourceFactory;
 
