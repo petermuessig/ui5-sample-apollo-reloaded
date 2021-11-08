@@ -16,7 +16,7 @@
     <Title class="title" text="{i18n>app_title}"/>
 
     <html:div class="searchbar">
-        <Input id="newTodo" placeholder="{i18n>todo_input_placeholder}"/>
+        <Input id="newTodo" placeholder="{i18n>todo_input_placeholder}" change=".addTodo"/>
         <Button text="{i18n>todo_button_add}" design="Emphasized" click=".addTodo" icon="add"/>
     </html:div>
 

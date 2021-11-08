@@ -13,11 +13,10 @@
     "dataSources": {
       "gqlsvc": {
         "uri": "http://localhost:4000/graphql",
-        "ws": "ws://localhost:4000/graphql",
         "customType": true,
         "type": "GraphQL",
         "settings": {
-          "x": "y"
+          "ws": "ws://localhost:4000/graphql"
         }
       }
     }

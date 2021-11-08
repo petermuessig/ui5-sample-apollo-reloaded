@@ -56,7 +56,7 @@ export default class BaseController extends Controller {
     });
 
     const wsLink = new WebSocketLink({
-      uri: graphQLService.ws,
+      uri: graphQLService.settings.ws,
       options: {
         reconnect: true,
       },
