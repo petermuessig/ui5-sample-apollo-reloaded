@@ -1,8 +1,6 @@
 import UIComponent from "sap/ui/core/UIComponent";
 import { support } from "sap/ui/Device";
 
-import "./util/applyMonkeyPatches"; // apply Monkey Patches
-
 /**
  * @namespace sap.ui.demo.apollo
  */
