@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment, @typescript-eslint/no-explicit-any,
+                  @typescript-eslint/no-unused-vars, @typescript-eslint/no-unsafe-assignment,
+                  @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument,
+                  @typescript-eslint/no-unsafe-call */
+
 import Controller from "sap/ui/core/mvc/Controller";
 import JSONModel from "sap/ui/model/json/JSONModel";
 import BindingMode from "sap/ui/model/BindingMode";

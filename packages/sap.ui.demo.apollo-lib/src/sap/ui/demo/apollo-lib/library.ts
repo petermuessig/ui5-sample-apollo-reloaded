@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment, @typescript-eslint/no-unsafe-member-access */
+
 /* global sap */
 import "sap/ui/core/library"; // library import (must be in sync with dependencies)
 

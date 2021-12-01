@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment, @typescript-eslint/no-explicit-any,
+                  @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call,
+                  @typescript-eslint/no-unsafe-assignment */
+
 import AppComponent from "../Component";
 import BaseController from "sap/ui/demo/apollo-lib/controller/BaseController";
 
