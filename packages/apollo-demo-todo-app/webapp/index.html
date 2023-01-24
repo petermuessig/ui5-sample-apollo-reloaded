@@ -10,12 +10,9 @@
 	<title>Apollo GraphQL Todo Application</title>
 
 	<script id="sap-ui-bootstrap"
-			src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"
+			src="resources/sap-ui-core.js"
 			data-sap-ui-resourceroots='{
-				"": "./resources/",
-				"sap": "https://openui5.hana.ondemand.com/resources/sap/",
-				"sap.ui.demo.apollo": "./",
-				"sap.ui.demo.apollo-lib": "./resources/sap/ui/demo/apollo-lib/"
+				"apollo.demo.todo.app": "./"
 			}'
 			data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
 			data-sap-ui-compatVersion="edge"
@@ -29,6 +26,6 @@
 </head>
 
 <body class="sapUiBody">
-	<div data-sap-ui-component data-name="sap.ui.demo.apollo"></div>
+	<div data-sap-ui-component data-name="apollo.demo.todo.app"></div>
 </body>
 </html>

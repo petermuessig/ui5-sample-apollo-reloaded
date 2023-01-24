@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "command": "yarn workspace sap.ui.demo.apollo exec ui5 build",
+            "command": "yarn workspace apollo.demo.todo.app exec ui5 build",
             "name": "Run ui5 build",
             "request": "launch",
             "type": "node-terminal"

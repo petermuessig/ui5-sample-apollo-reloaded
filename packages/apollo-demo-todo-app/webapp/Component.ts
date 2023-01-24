@@ -2,7 +2,7 @@ import UIComponent from "sap/ui/core/UIComponent";
 import { support } from "sap/ui/Device";
 
 /**
- * @namespace sap.ui.demo.apollo
+ * @namespace apollo.demo.todo.app
  */
 export default class Component extends UIComponent {
   public static metadata = {

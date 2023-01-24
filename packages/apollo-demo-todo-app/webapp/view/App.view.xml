@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="sap.ui.demo.apollo.controller.App"
+    controllerName="apollo.demo.todo.app.controller.App"
     displayBlock="true"
     xmlns="sap.ui.webc.main"
     xmlns:mvc="sap.ui.core.mvc"
@@ -16,7 +16,7 @@
     <Title class="title" text="{i18n>app_title}"/>
 
     <html:div class="searchbar">
-        <Input id="newTodo" placeholder="{i18n>todo_input_placeholder}"/>
+        <Input id="newTodo" placeholder="{i18n>todo_input_placeholder}" value="{ui>/new/title}"/>
         <Button text="{i18n>todo_button_add}" design="Emphasized" click=".addTodo" icon="add"/>
     </html:div>
 
@@ -33,7 +33,7 @@
 
     <Dialog id="editDialog" headerText="{i18n>todo_dialog_edit_header}">
         <content>
-            <Input id="editTodo" class="dialogTodoInput" change=".closeEdit"/>
+            <Input id="editTodo" class="dialogTodoInput" change=".closeEdit" value="{ui>/edit/title}"/>
         </content>
         <footer>
             <Button class="dialogCloseButton" design="Emphasized" text="{i18n>todo_dialog_close_button}" click=".closeEdit"/>

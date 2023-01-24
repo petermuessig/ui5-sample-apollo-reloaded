@@ -32,7 +32,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
  * and the UI5 programming model. It reads the datasource from the
  * <code>manifest.json</code> and
  *
- * @namespace sap.ui.demo.apollo-lib.controller
+ * @namespace apollo.demo.todo.lib.controller
  */
 export default class BaseController extends Controller {
   // https://www.apollographql.com/docs/react/development-testing/static-typing/

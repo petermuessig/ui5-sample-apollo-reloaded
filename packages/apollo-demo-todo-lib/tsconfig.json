@@ -18,11 +18,8 @@
             "../../node_modules/@openui5/ts-types-esm"
         ],
         "paths": {
-            "sap/ui/demo/apollo/*": [
+            "apollo/demo/todo/lib/*": [
                 "./src/*"
-            ],
-            "sap/ui/demo/apollo-lib/*": [
-                "../../node_modules/sap.ui.demo.apollo-lib/src/sap/ui/demo/apollo-lib/*"
             ]
         }
     },

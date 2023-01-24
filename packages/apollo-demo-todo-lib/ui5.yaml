@@ -1,0 +1,20 @@
+specVersion: "2.6"
+type: library
+metadata:
+  name: apollo.demo.todo.lib
+framework:
+  name: OpenUI5
+  version: "1.110.0"
+  libraries:
+    - name: sap.ui.core
+builder:
+  customTasks:
+  - name: ui5-tooling-transpile-task
+    afterTask: replaceVersion
+    configuration: &cfgTranspile
+      filePattern: .+(ts|tsx)
+      transpileTypeScript: true
+      transpileAsync: true
+      removeConsoleStatements: true
+  - name: ui5-tooling-modules-task
+    afterTask: ui5-tooling-transpile-task

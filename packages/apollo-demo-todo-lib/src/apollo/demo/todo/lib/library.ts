@@ -7,13 +7,13 @@ import "sap/ui/core/library"; // library import (must be in sync with dependenci
  * UI5 Apollo Client Wrapper Library
  *
  * @namespace
- * @name sap.ui.demo.apollo-lib
+ * @name apollo.demo.todo.lib
  * @version ${version}
  * @public
  */
 // delegate further initialization of this library to the Core
-sap.ui.getCore().initLibrary({
-  name: "sap.ui.demo.apollo-lib",
+const lib = sap.ui.getCore().initLibrary({
+  name: "apollo.demo.todo.lib",
   version: "${version}",
   dependencies: ["sap.ui.core"],
   types: [],
@@ -23,5 +23,5 @@ sap.ui.getCore().initLibrary({
   noLibraryCSS: true, // library has no CSS
 });
 
-// @ts-ignore - export the library namespace
-export default sap.ui.demo["apollo-lib"];
+export default lib;
+export { gql } from "@apollo/client/core";

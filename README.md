@@ -36,8 +36,8 @@ The repository includes the Apollo GraphQL server, a custom task and middleware 
 ```text
 packages
 ├── apollo-demo-todo-server // the Apollo GraphQL server
-├── sap.ui.demo.apollo      // the UI5 application
-├── sap.ui.demo.apollo-lib  // the UI5 library (INFO: do not use dashes in namespaces!)
+├── apollo.demo.todo.app      // the UI5 application
+├── apollo.demo.todo.lib  // the UI5 library (INFO: do not use dashes in namespaces!)
 └── ui5-tooling-modules     // the UI5 tooling task and middleware to consume NPM packages
 ```
 
@@ -53,7 +53,7 @@ yarn
 yarn start
 ```
 
-The start script will run the Apollo GraphQL server, the UI5 development server and Babel in the watch mode for the TypeScript-based projects: `sap.ui.demo.apollo` and `sap.ui.demo.apollo-lib`.
+The start script will run the Apollo GraphQL server, the UI5 development server and Babel in the watch mode for the TypeScript-based projects: `apollo.demo.todo.app` and `apollo.demo.todo.lib`.
 
 To create and run the production build of the monorepo, just run the following command:
 
@@ -65,7 +65,7 @@ yarn build
 yarn dist
 ```
 
-In `packages/sap.ui.demo.apollo/dist` folder you can find the build result of UI5 application and related libraries. The `dist` folder contains the application, the libraries and the bundles for the used OSS libraries.
+In `packages/apollo.demo.todo.app/dist` folder you can find the build result of UI5 application and related libraries. The `dist` folder contains the application, the libraries and the bundles for the used OSS libraries.
 
 ## Using npm packages in UI5
 
@@ -120,9 +120,9 @@ The `ui5-tooling-modules` extensions provides a custom middleware and a custom t
 
 ## Using Apollo GraphQL in UI5
 
-To improve the usage of Apollo GraphQL within TypeScript-based UI5 applications, the `sap.ui.demo.apollo-lib` provides a `BaseController` implementation which is adding some *syntactic sugar* to work easily with GraphQL and manages the GraphQL data in a
+To improve the usage of Apollo GraphQL within TypeScript-based UI5 applications, the `apollo.demo.todo.lib` provides a `BaseController` implementation which is adding some *syntactic sugar* to work easily with GraphQL and manages the GraphQL data in a
 `JSONModel`. This allows the usage of simple databinding in the `XMLView` to connect the GraphQL data with the UI5 controls.
-This `Controller` is the [`sap/ui/demo/apollo-lib/controller/BaseController`](packages/sap.ui.demo.apollo-lib/src/sap/ui/demo/apollo-lib/controller/BaseController.ts).
+This `Controller` is the [`apollo/demo/todo/lib/controller/BaseController`](packages/apollo.demo.todo.lib/src/apollo/demo/todo/lib/controller/BaseController.ts).
 
 Let's take a look into the functionality provided by the `BaseController`:
 
@@ -175,7 +175,7 @@ In addition, the `BaseController` adds some shortcuts to `$query`, `$mutate` and
 
 ```ts
 /**
- * @namespace sap.ui.demo.apollo.controller
+ * @namespace apollo.demo.todo.app.controller
  */
 export default class AppController extends BaseController {
   apollo = {
@@ -227,8 +227,8 @@ The `tsconfig.json` needs to be adopted to provide code completion for npm packa
             "sap/ui/demo/apollo/*": [
                 "./src/*"
             ],
-            "sap/ui/demo/apollo-lib/*": [
-                "../../node_modules/sap.ui.demo.apollo-lib/src/sap/ui/demo/apollo-lib/*"
+            "apollo/demo/todo/lib/*": [
+                "../../node_modules/apollo.demo.todo.lib/src/apollo/demo/todo/lib/*"
             ]
         }
     },
@@ -246,7 +246,7 @@ All these configurations are necessary that the IDE (e.g. VSCode) provides code 
 
 ### Remarks
 
-For the namespace of the UI5 library, we used `sap.ui.demo.apollo-lib`. A namespace with dashes works but has some downsides while accessing the resources from the global namespace.
+For the namespace of the UI5 library, we used `apollo.demo.todo.lib`. A namespace with dashes works but has some downsides while accessing the resources from the global namespace.
 
 ## How to obtain support
 

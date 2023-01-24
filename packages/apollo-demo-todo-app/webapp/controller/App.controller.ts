@@ -3,19 +3,33 @@
                   @typescript-eslint/no-unsafe-assignment */
 
 import AppComponent from "../Component";
-import BaseController from "sap/ui/demo/apollo-lib/controller/BaseController";
+import BaseController from "apollo/demo/todo/lib/controller/BaseController";
 
 import Event from "sap/ui/base/Event";
 
 import Button from "sap/ui/webc/main/Button";
 import Dialog from "sap/ui/webc/main/Dialog";
-import Input from "sap/ui/webc/main/Input";
 import MessageStrip from "sap/ui/webc/main/MessageStrip";
 
-import { gql } from "@apollo/client/core";
+import { gql } from "apollo/demo/todo/lib/library";
+import JSONModel from "sap/ui/model/json/JSONModel";
+
+export interface UIModelData {
+  new: New;
+  edit: Edit;
+}
+
+export interface Edit {
+  id: string;
+  title: string;
+}
+
+export interface New {
+  title: string;
+}
 
 /**
- * @namespace sap.ui.demo.apollo.controller
+ * @namespace apollo.demo.todo.app.controller
  */
 export default class AppController extends BaseController {
   apollo = {
@@ -33,8 +47,12 @@ export default class AppController extends BaseController {
     },
   };
 
+  private uiData: UIModelData;
+
   public onInit(): void {
     super.onInit();
+
+    this.uiData = this.getUIModelData();
 
     const updateOnEvent = {
       next: (/* data: any */) => {
@@ -101,11 +119,18 @@ export default class AppController extends BaseController {
     message.setVisible(false);
   }
 
-  public addTodo(/* event: Event */): void {
-    const newTodo = this.byId("newTodo") as Input;
+  private getUIModel(): JSONModel {
+    return this.getView().getModel("ui") as JSONModel;
+  }
+  private getUIModelData(): UIModelData {
+    return this.getUIModel().getData() as UIModelData;
+  }
+
+  public async addTodo(/* event: Event */): Promise<void> {
+    const { title } = this.uiData.new;
 
     // create the new todo item via mutate call
-    void this.$mutate({
+    await this.$mutate({
       mutation: gql`
         mutation CreateTodo($title: String) {
           createTodo(todo: { title: $title }) {
@@ -116,28 +141,34 @@ export default class AppController extends BaseController {
         }
       `,
       variables: {
-        title: newTodo.getValue(),
+        title,
       },
-    }).then((/* response */) => {
-      // clean the new todo input
-      newTodo.setValue("");
     });
+    // clean the new todo input
+    //newTodo.setValue("");
+    this.uiData.new.title = "";
+    //this.getUIModel().refresh();
   }
 
   public editTodo(event: Event): void {
     const context = (event.getSource() as Button).getBindingContext();
     const dialog = this.byId("editDialog") as Dialog;
-    dialog.setBindingContext(context); // binding context as reference for the id!
-    const editTodo = this.byId("editTodo") as Input;
-    editTodo.setValue(context.getProperty("title"));
+    //dialog.setBindingContext(context); // binding context as reference for the id!
+    //const editTodo = this.byId("editTodo") as Input;
+    //editTodo.setValue(context.getProperty("title"));
+    this.uiData.edit = {
+      id: context.getProperty("id"),
+      title: context.getProperty("title"),
+    };
     // @ts-ignore - TODO: Dialog#show not available in @openui5/ts-types-esm
     dialog.show(false);
   }
 
   public closeEdit(/* event: Event */): void {
     const dialog = this.byId("editDialog") as Dialog;
-    const context = dialog.getBindingContext();
-    const editTodo = this.byId("editTodo") as Input;
+    //const context = dialog.getBindingContext();
+    //const editTodo = this.byId("editTodo") as Input;
+    const { id, title } = this.uiData.edit;
     this.$mutate({
       mutation: gql`
         mutation CreateTodo($id: ID, $title: String) {
@@ -149,8 +180,8 @@ export default class AppController extends BaseController {
         }
       `,
       variables: {
-        title: editTodo.getValue(),
-        id: context.getProperty("id"),
+        title,
+        id,
       },
     }).finally(() => {
       dialog.close();

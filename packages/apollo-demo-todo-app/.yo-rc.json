@@ -3,12 +3,12 @@
     "application": "apollo",
     "namespace": "sap.ui.demo",
     "framework": "OpenUI5",
-    "frameworkVersion": "1.94.0",
+    "frameworkVersion": "1.110.0",
     "author": "SAP Hackers",
     "tstypes": "@openui5/ts-types-esm",
     "tstypesVersion": "1.94.0",
-    "appId": "sap.ui.demo.apollo",
-    "appURI": "sap/ui/demo/apollo",
+    "appId": "apollo.demo.todo.app",
+    "appURI": "apollo/demo/todo/app",
     "setupCompleted": true
   }
 }

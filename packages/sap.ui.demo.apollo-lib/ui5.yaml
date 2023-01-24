@@ -1,8 +1,0 @@
-specVersion: "2.2"
-type: library
-metadata:
-  name: sap.ui.demo.apollo-lib
-resources:
-  configuration:
-    paths:
-      src: "gen"

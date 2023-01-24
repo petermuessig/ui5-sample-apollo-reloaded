@@ -10,7 +10,7 @@
         "strict": true,
         "strictNullChecks": false,
         "strictPropertyInitialization": false,
-        "rootDir": "./src",
+        "rootDir": "./webapp",
         "outDir": "./dist",
         "baseUrl": "./",
         "typeRoots": [
@@ -18,12 +18,15 @@
             "../../node_modules/@openui5/ts-types-esm"
         ],
         "paths": {
-            "sap/ui/demo/apollo-lib/*": [
-                "./src/*"
+            "apollo/demo/todo/app/*": [
+                "./webapp/*"
+            ],
+            "apollo/demo/todo/lib/*": [
+                "../../node_modules/apollo-demo-todo-lib/src/apollo/demo/todo/lib/*"
             ]
         }
     },
     "include": [
-        "./src/**/*"
+        "./webapp/**/*"
     ]
 }
