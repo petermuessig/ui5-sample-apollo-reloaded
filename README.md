@@ -36,9 +36,8 @@ The repository includes the Apollo GraphQL server, a custom task and middleware 
 ```text
 packages
 ├── apollo-demo-todo-server // the Apollo GraphQL server
-├── apollo.demo.todo.app      // the UI5 application
-├── apollo.demo.todo.lib  // the UI5 library (INFO: do not use dashes in namespaces!)
-└── ui5-tooling-modules     // the UI5 tooling task and middleware to consume NPM packages
+├── apollo-demo-todo-app    // the UI5 application
+└── apollo-demo-todo-lib    // the UI5 library (INFO: dashes are only used for the package name, not for the library namespace!)
 ```
 
 ## Get Started
